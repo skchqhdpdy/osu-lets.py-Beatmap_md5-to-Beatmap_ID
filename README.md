@@ -1,5 +1,7 @@
 # osu-lets.py-Beatmap_md5-to-Beatmap_ID
 
+적용 하실때 README.md 은 복붙 하시 마세유
+
 lets.py 완성체를 가지고 계셔야 사용가능 합니다.
 
 https://github.com/light-ripple/Light-Ripple-Windows <-- 여기에 lets.py있으니
