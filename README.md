@@ -11,4 +11,4 @@ https://github.com/light-ripple/Light-Ripple-Windows <-- 여기에 lets.py있으
 이미 오스 사설 서버 여시는 분은 굳이 위에 링크 말고 lets.py에 잘 복붙 하세유
 
 
-https://cdn.discordapp.com/attachments/904048388163641376/1051977563666382888/image.png
+<img scr="https://cdn.discordapp.com/attachments/904048388163641376/1051977563666382888/image.png">
