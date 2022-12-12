@@ -10,5 +10,8 @@ https://github.com/light-ripple/Light-Ripple-Windows <-- 여기에 lets.py있으
 
 이미 오스 사설 서버 여시는 분은 굳이 위에 링크 말고 lets.py에 잘 복붙 하세유
 
+요청 주소는 https://old.{Your Domain}/find-beatmap-md5?{Beatmap_md5}
+
+localhost는 http://localhost:5002/find-beatmap-md5?{Beatmap_md5}
 
 <img src="https://cdn.discordapp.com/attachments/904048388163641376/1051977563666382888/image.png">
