@@ -57,15 +57,17 @@ from objects import glob
 from pubSubHandlers import beatmapUpdateHandler
 import secret.achievements.utils
  """
-#copy THIS 1
+#copy THIS 1 & 2
 from handlers import findBeatmapMd5Handler
+from handlers import getfriends
 """ 
 
 def make_app():
 	return tornado.web.Application([
  """
-		#copy THIS 2
+		#copy THIS 3 & 4
 		(r"/letsapi/v1/find-beatmap-md5", findBeatmapMd5Handler.handler),
+		(r"/web/osu-getfriends.php", getfriends.handler),
 
 """ 		(r"/users", inGameRegistrationHandler.handler),
 		(r"/web/bancho_connect.php", banchoConnectHandler.handler),
