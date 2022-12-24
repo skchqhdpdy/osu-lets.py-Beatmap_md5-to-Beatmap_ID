@@ -1,4 +1,4 @@
-# General imports
+""" # General imports
 import os
 import sys
 from multiprocessing.pool import ThreadPool
@@ -56,16 +56,16 @@ from common import agpl
 from objects import glob
 from pubSubHandlers import beatmapUpdateHandler
 import secret.achievements.utils
-
+ """
 from handlers import findBeatmapMd5Handler
-
+""" 
 
 def make_app():
 	return tornado.web.Application([
-
+ """
 		(r"/letsapi/v1/find-beatmap-md5", findBeatmapMd5Handler.handler),
 
-		(r"/users", inGameRegistrationHandler.handler),
+""" 		(r"/users", inGameRegistrationHandler.handler),
 		(r"/web/bancho_connect.php", banchoConnectHandler.handler),
 		(r"/web/osu-osz2-getscores.php", getScoresHandler.handler),
 		(r"/web/osu-submit-modular.php", submitModularHandler.handler),
@@ -316,4 +316,4 @@ if __name__ == "__main__":
 		# Perform some clean up
 		print("> Disposing server... ")
 		glob.fileBuffers.flushAll()
-		consoleHelper.printColored("Goodbye!", bcolors.GREEN)
+		consoleHelper.printColored("Goodbye!", bcolors.GREEN) """
