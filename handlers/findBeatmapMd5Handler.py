@@ -19,7 +19,7 @@ from common.sentry import sentry
 MODULE_NAME = "findBeatmapMd5Handler"
 class handler(requestsManager.asyncRequestHandler):
 	"""
-	Handler for /find-beatmap-md5
+	Handler for /letsapi/v1/find-beatmap-md5
 
 	"""
 	@tornado.web.asynchronous
