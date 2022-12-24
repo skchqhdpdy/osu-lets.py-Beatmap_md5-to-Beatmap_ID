@@ -1,17 +1,19 @@
 # osu-lets.py-Beatmap_md5-to-Beatmap_ID
 
-Àû¿ë ÇÏ½Ç¶§ README.md Àº º¹ºÙ ÇÏ½Ã ¸¶¼¼À¯
+ì ìš© í•˜ì‹¤ë•Œ README.md ì€ ë³µë¶™ í•˜ì‹œ ë§ˆì„¸ìœ 
 
-lets.py ¿Ï¼ºÃ¼¸¦ °¡Áö°í °è¼Å¾ß »ç¿ë°¡´É ÇÕ´Ï´Ù.
+lets.py ì™„ì„±ì²´ë¥¼ ê°€ì§€ê³  ê³„ì…”ì•¼ ì‚¬ìš©ê°€ëŠ¥ í•©ë‹ˆë‹¤.
 
-https://github.com/light-ripple/Light-Ripple-Windows <-- ¿©±â¿¡ lets.pyÀÖÀ¸´Ï
+https://github.com/light-ripple/Light-Ripple-Windows <-- ì—¬ê¸°ì— lets.pyìˆìœ¼ë‹ˆ
 
-°Å±â¿¡ Á¦ ÆÄÀÏ ´Ù¿î ¹ŞÀ¸½Ã°í Àß º¹ºÙ ÇÏ½Ã¸é µË´Ï´Ù. (Ãß°¡)
+ê±°ê¸°ì— ì œ íŒŒì¼ ë‹¤ìš´ ë°›ìœ¼ì‹œê³  ì˜ ë³µë¶™ í•˜ì‹œë©´ ë©ë‹ˆë‹¤. (ì¶”ê°€)
 
-ÀÌ¹Ì ¿À½º »ç¼³ ¼­¹ö ¿©½Ã´Â ºĞÀº ±»ÀÌ À§¿¡ ¸µÅ© ¸»°í lets.py¿¡ Àß º¹ºÙ ÇÏ¼¼À¯
+ì´ë¯¸ ì˜¤ìŠ¤ ì‚¬ì„¤ ì„œë²„ ì—¬ì‹œëŠ” ë¶„ì€ êµ³ì´ ìœ„ì— ë§í¬ ë§ê³  lets.pyì— ì˜ ë³µë¶™ í•˜ì„¸ìœ 
 
-¿äÃ» ÁÖ¼Ò´Â https://old.{YourDomain}/letsapi/v1/find-beatmap-md5?{Beatmap_md5} (lets.py ÁÖ¼Ò´Â ´ëÃ¤·Î old. ÁÖ¼Ò·Î ½ÃÀÛÇÒ°Ì´Ï´Ù.)
+ì´ ë ˆí¬ì§€í† ë¦¬ì— ìˆëŠ” lets.pyíŒŒì¼ì—ì„œ ì£¼ì„ ë¶€ë¶„ì´ ì—†ëŠ” 2ì¤„ì˜ ì½”ë“œë¥¼ ë³µë¶™í•˜ì„¸ìœ .
 
-localhost´Â http://localhost:5002/letsapi/v1/find-beatmap-md5?{Beatmap_md5}
+ìš”ì²­ ì£¼ì†ŒëŠ” https://old.{YourDomain}/letsapi/v1/find-beatmap-md5?{Beatmap_md5} (lets.py ì£¼ì†ŒëŠ” ëŒ€ì±„ë¡œ old. ì£¼ì†Œë¡œ ì‹œì‘í• ê²ë‹ˆë‹¤.)
+
+localhostëŠ” http://localhost:5002/letsapi/v1/find-beatmap-md5?{Beatmap_md5}
 
 <img src="https://cdn.discordapp.com/attachments/904048388163641376/1051977563666382888/image.png">
