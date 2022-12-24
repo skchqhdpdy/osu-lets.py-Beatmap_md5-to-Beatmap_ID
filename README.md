@@ -10,7 +10,7 @@ https://github.com/light-ripple/Light-Ripple-Windows <-- 여기에 lets.py있으
 
 이미 오스 사설 서버 여시는 분은 굳이 위에 링크 말고 lets.py에 잘 복붙 하세유
 
-이 레포지토리에 있는 lets.py파일에서 주석 부분이 없는 2줄의 코드를 복붙하세유.
+이 레포지토리에 있는 lets.py파일에서 주석 부분이 없는 4줄의 코드를 복붙하세유.
 
 요청 주소는 https://old.{YourDomain}/letsapi/v1/find-beatmap-md5?{Beatmap_md5} (lets.py 주소는 대채로 old. 주소로 시작할겁니다.)
 
