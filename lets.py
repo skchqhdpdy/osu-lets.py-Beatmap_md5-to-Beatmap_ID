@@ -57,12 +57,14 @@ from objects import glob
 from pubSubHandlers import beatmapUpdateHandler
 import secret.achievements.utils
  """
+#copy THIS 1
 from handlers import findBeatmapMd5Handler
 """ 
 
 def make_app():
 	return tornado.web.Application([
  """
+		#copy THIS 2
 		(r"/letsapi/v1/find-beatmap-md5", findBeatmapMd5Handler.handler),
 
 """ 		(r"/users", inGameRegistrationHandler.handler),
