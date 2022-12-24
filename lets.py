@@ -35,6 +35,7 @@ from handlers import getFullReplayHandlerRelax
 from handlers import getReplayHandler
 from handlers import getScoresHandler
 from handlers import getScreenshotHandler
+from handlers import getSeasonalHandler
 from handlers import loadTestHandler
 from handlers import mapsHandler
 from handlers import inGameRegistrationHandler
@@ -42,10 +43,12 @@ from handlers import getFullErrorHandler
 from handlers import osuErrorHandler
 from handlers import osuSearchHandler
 from handlers import osuSearchSetHandler
+from handlers import osuSessionHandler
 from handlers import redirectHandler
 from handlers import submitModularHandler
 from handlers import uploadScreenshotHandler
 from handlers import commentHandler
+from handlers import lastFMHandler
 from helpers import config
 from helpers import consoleHelper
 from common import generalUtils
@@ -53,7 +56,6 @@ from common import agpl
 from objects import glob
 from pubSubHandlers import beatmapUpdateHandler
 import secret.achievements.utils
-from subprocess import call
 
 from handlers import findBeatmapMd5Handler
 
@@ -61,7 +63,7 @@ from handlers import findBeatmapMd5Handler
 def make_app():
 	return tornado.web.Application([
 
-		(r"/find-beatmap-md5", findBeatmapMd5Handler.handler),
+		(r"/letsapi/v1/find-beatmap-md5", findBeatmapMd5Handler.handler),
 
 		(r"/users", inGameRegistrationHandler.handler),
 		(r"/web/bancho_connect.php", banchoConnectHandler.handler),
@@ -69,9 +71,11 @@ def make_app():
 		(r"/web/osu-submit-modular.php", submitModularHandler.handler),
 		(r"/web/osu-submit-modular-selector.php", submitModularHandler.handler),
 		(r"/web/osu-getreplay.php", getReplayHandler.handler),
+		(r"/web/osu-getseasonal.php", getSeasonalHandler.handler),
 		(r"/web/osu-screenshot.php", uploadScreenshotHandler.handler),
 		(r"/web/osu-search.php", osuSearchHandler.handler),
 		(r"/web/osu-search-set.php", osuSearchSetHandler.handler),
+		(r"/web/osu-session.php", osuSessionHandler.handler),
 		(r"/web/check-updates.php", checkUpdatesHandler.handler),
 		(r"/web/osu-error.php", osuErrorHandler.handler),
 		(r"/web/osu-comment.php", commentHandler.handler),
@@ -87,8 +91,8 @@ def make_app():
 		(r"/web/replays_relax/(.*)", getFullReplayHandlerRelax.handler),
 		(r"/web/errorlogs/(.*)", getFullErrorHandler.handler),
 
-		(r"/p/verify", redirectHandler.handler, dict(destination="https://ripple.moe/")),
-		(r"/u/(.*)", redirectHandler.handler, dict(destination="https://ripple.moe/u/{}")),
+		(r"/p/verify", redirectHandler.handler, dict(destination="https://redstar.moe/")),
+		(r"/u/(.*)", redirectHandler.handler, dict(destination="https://redstar.moe/u/{}")),
 
 		(r"/api/v1/status", apiStatusHandler.handler),
 		(r"/api/v1/pp", apiPPHandler.handler),
@@ -97,30 +101,31 @@ def make_app():
 		(r"/letsapi/v1/status", apiStatusHandler.handler),
 		(r"/letsapi/v1/pp", apiPPHandler.handler),
 		(r"/letsapi/v1/cacheBeatmap", apiCacheBeatmapHandler.handler),
-
+		(r"/web/lastfm.php", lastFMHandler.handler),
+		
 		# Not done yet
-		(r"/web/osu-addfavourite.php", osuErrorHandler.handler), # I use the error handler as I want an empty response for the time being
-		(r"/web/lastfm.php", emptyHandler.handler),
-		(r"/web/osu-checktweets.php", emptyHandler.handler),
+		(r"/web/osu-get-beatmap-topic.php", emptyHandler.handler), # Beatmap Topic
+		(r"/web/osu-markasread.php", emptyHandler.handler), # Mark As Read
+		(r"/web/osu-addfavourite.php", emptyHandler.handler), # Add Favorite
+		(r"/web/osu-checktweets.php", emptyHandler.handler), # Do we need this?
 
 		(r"/loadTest", loadTestHandler.handler),
 	], default_handler_class=defaultHandler.handler)
 
 
 if __name__ == "__main__":
-    	# AGPL license agreement
+	# AGPL license agreement
 	try:
-			call('cls', shell=True)
-			agpl.check_license("ripple", "LETS")
+		agpl.check_license("ripple", "LETS")
 	except agpl.LicenseError as e:
-			print(str(e))
-			sys.exit(1)
+		print(str(e))
+		sys.exit(1)
 
 	try:
 		consoleHelper.printServerStartHeader(True)
 
 		# Read config
-		consoleHelper.printNoNl("> Reading config file [/]             ")
+		consoleHelper.printNoNl("> Reading config file... ")
 		glob.conf = config.config("config.ini")
 
 		if glob.conf.default:
@@ -140,7 +145,7 @@ if __name__ == "__main__":
 			consoleHelper.printDone()
 
 		# Read additional config file
-		consoleHelper.printNoNl("> Loading additional config file [/]  ")
+		consoleHelper.printNoNl("> Loading additional config file... ")
 		try:
 			if not os.path.isfile(glob.conf.config["custom"]["config"]):
 				consoleHelper.printWarning()
@@ -168,15 +173,15 @@ if __name__ == "__main__":
 			consoleHelper.printColored("[!] You are highly adviced to update your common submodule as stability may vary with outdated modules.", bcolors.RED)
 
 		# Create data/oppai maps folder if needed
-		consoleHelper.printNoNl("> Checking folders [/]                ")
+		consoleHelper.printNoNl("> Checking folders... ")
 		paths = [
 			".data",
-			"{}_relax".format(glob.conf.config["server"]["replayspath"]),
-			glob.conf.config["server"]["screenshotspath"],
-			".data/screenshots",
 			".data/oppai",
 			".data/catch_the_pp",
-			glob.conf.config["server"]["beatmapspath"]
+			glob.conf.config["server"]["replayspath"],
+			"{}_relax".format(glob.conf.config["server"]["replayspath"]),
+			glob.conf.config["server"]["beatmapspath"],
+			glob.conf.config["server"]["screenshotspath"]
 		]
 		for i in paths:
 			if not os.path.exists(i):
@@ -185,7 +190,7 @@ if __name__ == "__main__":
 
 		# Connect to db
 		try:
-			consoleHelper.printNoNl("> Connecting to MySQL database [/]   ")
+			consoleHelper.printNoNl("> Connecting to MySQL database... ")
 			glob.db = dbConnector.db(glob.conf.config["db"]["host"], glob.conf.config["db"]["username"], glob.conf.config["db"]["password"], glob.conf.config["db"]["database"], int(
 				glob.conf.config["db"]["workers"]))
 			consoleHelper.printNoNl(" ")
@@ -198,7 +203,7 @@ if __name__ == "__main__":
 
 		# Connect to redis
 		try:
-			consoleHelper.printNoNl("> Connecting to Redis [/]            ")
+			consoleHelper.printNoNl("> Connecting to redis... ")
 			glob.redis = redis.Redis(glob.conf.config["redis"]["host"], glob.conf.config["redis"]["port"], glob.conf.config["redis"]["database"], glob.conf.config["redis"]["password"])
 			glob.redis.ping()
 			consoleHelper.printNoNl(" ")
@@ -221,7 +226,7 @@ if __name__ == "__main__":
 
 		# Create threads pool
 		try:
-			consoleHelper.printNoNl("> Creating threads pool [/]           ")
+			consoleHelper.printNoNl("> Creating threads pool... ")
 			glob.pool = ThreadPool(int(glob.conf.config["server"]["threads"]))
 			consoleHelper.printDone()
 		except:
@@ -235,6 +240,7 @@ if __name__ == "__main__":
 				consoleHelper.printColored("[!] IMPORTANT! Your beatmapcacheexpire in config.ini is > 0 and osu!api features are disabled.\nWe do not reccoment this, because too old beatmaps will be shown as unranked.\nSet beatmapcacheexpire to 0 to disable beatmap latest update check and fix that issue.", bcolors.YELLOW)
 
 		# Load achievements
+		consoleHelper.printNoNl("Loading achievements... ")
 		try:
 			secret.achievements.utils.load_achievements()
 		except Exception as e:
@@ -248,7 +254,7 @@ if __name__ == "__main__":
 
 		# Set achievements version
 		glob.redis.set("lets:achievements_version", glob.ACHIEVEMENTS_VERSION)
-		consoleHelper.printColored("Achievements version {}".format(glob.ACHIEVEMENTS_VERSION), bcolors.YELLOW)
+		consoleHelper.printColored("Achievements version is {}".format(glob.ACHIEVEMENTS_VERSION), bcolors.YELLOW)
 
 		# Print disallowed mods into console (Used to also assign it into variable but has been moved elsewhere)
 		unranked_mods = [key for key, value in glob.conf.extra["common"]["rankable-mods"].items() if not value]
@@ -260,13 +266,6 @@ if __name__ == "__main__":
 
 		# Make array of bools to respective rank id's
 		glob.conf.extra["_allowed_beatmap_rank"] = [getattr(rankedStatuses, key) for key in allowed_beatmap_rank] # Store the allowed beatmap rank id's into glob
-
-
-		# Discord
-		if generalUtils.stringToBool(glob.conf.config["discord"]["enable"]):
-			glob.schiavo = schiavo.schiavo(glob.conf.config["discord"]["boturl"], "**lets**")
-		else:
-			consoleHelper.printColored("[!] Warning! Discord logging is disabled!", bcolors.YELLOW)
 
 		# Check debug mods
 		glob.debug = generalUtils.stringToBool(glob.conf.config["server"]["debug"])
@@ -307,7 +306,7 @@ if __name__ == "__main__":
 		}).start()
 
 		# Server start message and console output
-		consoleHelper.printColored("> L.E.T.S. is listening for clients on {}:{} [<>]".format(glob.conf.config["server"]["host"], serverPort), bcolors.GREEN)
+		consoleHelper.printColored("> L.E.T.S. is listening for clients on {}:{}...".format(glob.conf.config["server"]["host"], serverPort), bcolors.GREEN)
 		log.logMessage("Server started!", discord="bunker", stdout=False)
 
 		# Start Tornado
